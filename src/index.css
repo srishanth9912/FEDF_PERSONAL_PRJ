@@ -1,0 +1,48 @@
+:root {
+  --bg-color: #f0faf5;
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --text-color: #111827;
+  --text-muted: #4b5563;
+  --border-color: rgba(6, 78, 59, 0.1);
+  --primary: #059669;
+  --primary-hover: #047857;
+  --primary-light: rgba(5, 150, 105, 0.08);
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.08);
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.08);
+
+  --food-color: #10b981;
+  --study-color: #3b82f6;
+  --travel-color: #f59e0b;
+  --entertainment-color: #ec4899;
+  --others-color: #8b5cf6;
+
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --radius: 0.875rem;
+  --radius-sm: 0.5rem;
+}
+
+select option {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
