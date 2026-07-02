@@ -1,19 +1,32 @@
-import { useState } from 'react';
-import { CATEGORIES, CATEGORY_ICONS, CATEGORY_COLORS, MONTHS, YEARS } from '../constants';
+import { useState } from "react";
+import {
+  CATEGORIES,
+  CATEGORY_ICONS,
+  CATEGORY_COLORS,
+  MONTHS,
+  YEARS,
+} from "../constants";
 
 export default function Analytics({ expenses }) {
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth().toString());
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
+  const [selectedMonth, setSelectedMonth] = useState(
+    new Date().getMonth().toString(),
+  );
+  const [selectedYear, setSelectedYear] = useState(
+    new Date().getFullYear().toString(),
+  );
 
   const filteredExpenses = expenses.filter((exp) => {
-    const [year, month] = exp.date.split('-').map(Number);
+    const [year, month] = exp.date.split("-").map(Number);
     return (
       (month - 1).toString() === selectedMonth &&
       year.toString() === selectedYear
     );
   });
 
-  const totalSpent = filteredExpenses.reduce((sum, item) => sum + item.amount, 0);
+  const totalSpent = filteredExpenses.reduce(
+    (sum, item) => sum + item.amount,
+    0,
+  );
 
   const categoryTotals = CATEGORIES.reduce((acc, cat) => {
     acc[cat] = filteredExpenses
@@ -29,18 +42,19 @@ export default function Analytics({ expenses }) {
   }, {});
 
   const sortedCategories = [...CATEGORIES].sort(
-    (a, b) => (categoryTotals[b] || 0) - (categoryTotals[a] || 0)
+    (a, b) => (categoryTotals[b] || 0) - (categoryTotals[a] || 0),
   );
 
-  const activeCategories = sortedCategories.filter((cat) => categoryTotals[cat] > 0);
+  const activeCategories = sortedCategories.filter(
+    (cat) => categoryTotals[cat] > 0,
+  );
 
   const currentMonthLabel =
-    MONTHS.find((m) => m.value === selectedMonth)?.label || '';
+    MONTHS.find((m) => m.value === selectedMonth)?.label || "";
 
   return (
     <div className="analytics-container">
       <div className="glass-panel analytics-card">
-
         <div className="analytics-header">
           <div>
             <h2>Month-Wise Visual Analytics</h2>
@@ -52,7 +66,9 @@ export default function Analytics({ expenses }) {
               onChange={(e) => setSelectedMonth(e.target.value)}
             >
               {MONTHS.map((m) => (
-                <option key={m.value} value={m.value}>{m.label}</option>
+                <option key={m.value} value={m.value}>
+                  {m.label}
+                </option>
               ))}
             </select>
             <select
@@ -60,7 +76,9 @@ export default function Analytics({ expenses }) {
               onChange={(e) => setSelectedYear(e.target.value)}
             >
               {YEARS.map((y) => (
-                <option key={y} value={y}>{y}</option>
+                <option key={y} value={y}>
+                  {y}
+                </option>
               ))}
             </select>
           </div>
@@ -69,14 +87,15 @@ export default function Analytics({ expenses }) {
         {totalSpent === 0 ? (
           <div className="empty-analytics">
             <span className="empty-icon">📊</span>
-            <p>No records for {currentMonthLabel} {selectedYear}.</p>
+            <p>
+              No records for {currentMonthLabel} {selectedYear}.
+            </p>
             <p className="text-muted">
               Add expenses in Transactions to see charts here.
             </p>
           </div>
         ) : (
           <div className="analytics-content">
-
             {/* Stacked Flexbox Bar — replaces the donut chart */}
             <div className="stacked-bar-section">
               <h4>Category Distribution</h4>
@@ -105,13 +124,18 @@ export default function Analytics({ expenses }) {
                 {activeCategories.map((cat) => (
                   <div key={cat} className="legend-item">
                     <div className="legend-top">
-                      <span className="legend-color" style={{ backgroundColor: CATEGORY_COLORS[cat] }}></span>
+                      <span
+                        className="legend-color"
+                        style={{ backgroundColor: CATEGORY_COLORS[cat] }}
+                      ></span>
                       <span>{CATEGORY_ICONS[cat]}</span>
                       <span className="legend-name">{cat}</span>
                     </div>
                     <div className="legend-bottom">
                       <span className="legend-pct">{percentages[cat]}%</span>
-                      <span className="legend-amt">₹{categoryTotals[cat].toLocaleString()}</span>
+                      <span className="legend-amt">
+                        ₹{categoryTotals[cat].toLocaleString()}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -120,7 +144,6 @@ export default function Analytics({ expenses }) {
 
             {/* Breakdown and Rankings side by side */}
             <div className="analytics-bottom-grid">
-
               <div className="breakdown-section">
                 <h4>Spending Breakdown</h4>
                 <div className="bar-chart">
@@ -130,8 +153,12 @@ export default function Analytics({ expenses }) {
                     return (
                       <div key={cat} className="bar-row">
                         <div className="bar-label-group">
-                          <span>{CATEGORY_ICONS[cat]} {cat}</span>
-                          <span className="bar-amt">₹{amt.toLocaleString()}</span>
+                          <span>
+                            {CATEGORY_ICONS[cat]} {cat}
+                          </span>
+                          <span className="bar-amt">
+                            ₹{amt.toLocaleString()}
+                          </span>
                         </div>
                         <div className="bar-track">
                           <div
@@ -164,14 +191,14 @@ export default function Analytics({ expenses }) {
                         />
                       </div>
                       <span className="rank-pct">{percentages[cat]}%</span>
-                      <span className="rank-amt">₹{categoryTotals[cat].toLocaleString()}</span>
+                      <span className="rank-amt">
+                        ₹{categoryTotals[cat].toLocaleString()}
+                      </span>
                     </div>
                   ))}
                 </div>
               </div>
-
             </div>
-
           </div>
         )}
       </div>

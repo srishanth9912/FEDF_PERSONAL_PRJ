@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { CATEGORIES, CATEGORY_ICONS, getTodayString } from '../constants';
 
+const createExpenseId = () => {
+  if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+};
+
 export default function Transactions({ expenses, onAddExpense, onUpdateExpense, onDeleteExpense }) {
   const todayString = getTodayString();
 
@@ -35,7 +40,7 @@ export default function Transactions({ expenses, onAddExpense, onUpdateExpense, 
       setEditingId(null);
     } else {
       onAddExpense({
-        id: Date.now().toString(),
+        id: createExpenseId(),
         title: note.trim(),
         amount: parsedAmount,
         category,
@@ -228,3 +233,4 @@ export default function Transactions({ expenses, onAddExpense, onUpdateExpense, 
     </div>
   );
 }
+

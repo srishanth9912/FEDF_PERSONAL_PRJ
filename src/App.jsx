@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './App.css';
 import Dashboard from './components/Dashboard';
 import Transactions from './components/Transactions';
@@ -7,12 +7,7 @@ import { getExpenses, saveExpenses } from './services/expenseService';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('dashboard');
-  const [expenses, setExpenses] = useState([]);
-
-  useEffect(() => {
-    const data = getExpenses();
-    setExpenses(data);
-  }, []);
+  const [expenses, setExpenses] = useState(() => getExpenses());
 
   const handleAddExpense = (newExpense) => {
     const updated = [newExpense, ...expenses];
@@ -94,3 +89,4 @@ export default function App() {
     </div>
   );
 }
+
