@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Dashboard from './components/Dashboard';
 import Transactions from './components/Transactions';
@@ -8,6 +8,19 @@ import { getExpenses, saveExpenses } from './services/expenseService';
 export default function App() {
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [expenses, setExpenses] = useState(() => getExpenses());
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark';
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
 
   const handleAddExpense = (newExpense) => {
     const updated = [newExpense, ...expenses];
@@ -56,6 +69,8 @@ export default function App() {
           className="logo"
           onClick={() => setCurrentPage('dashboard')}
           onKeyDown={(e) => e.key === 'Enter' && setCurrentPage('dashboard')}
+          role="button"
+          tabIndex={0}
         >
           <h1>Daily Expense Tracker</h1>
         </div>
@@ -80,6 +95,15 @@ export default function App() {
               Analytics
             </button>
           </div>
+          <button
+            id="theme-toggle"
+            className="theme-toggle-btn"
+            onClick={() => setDarkMode((d) => !d)}
+            aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={darkMode ? 'Light mode' : 'Dark mode'}
+          >
+            {darkMode ? '☀️' : '🌙'}
+          </button>
         </nav>
       </header>
       <main>{renderPage()}</main>
@@ -89,4 +113,5 @@ export default function App() {
     </div>
   );
 }
+
 

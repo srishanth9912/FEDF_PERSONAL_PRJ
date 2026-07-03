@@ -31,7 +31,8 @@ export const MONTHS = [
   { value: "11", label: "December" },
 ];
 
-export const YEARS = ["2024", "2025", "2026", "2027"];
+const _cy = new Date().getFullYear();
+export const YEARS = Array.from({ length: 5 }, (_, i) => String(_cy - 2 + i));
 
 export const getTodayString = () => {
   const today = new Date();

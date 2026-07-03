@@ -1,5 +1,12 @@
-import { useState } from "react";
-import { CATEGORIES, CATEGORY_ICONS, MONTHS, YEARS } from "../constants";
+import { useState, useMemo } from "react";
+import { CATEGORIES, CATEGORY_ICONS, MONTHS } from "../constants";
+
+const buildYearList = (expenses) => {
+  const cy = new Date().getFullYear();
+  const dataYears = expenses.map((e) => parseInt(e.date.split('-')[0], 10));
+  const all = new Set([...dataYears, cy - 1, cy, cy + 1, cy + 2]);
+  return [...all].filter((y) => y >= 2000).sort((a, b) => a - b).map(String);
+};
 
 export default function Dashboard({ expenses }) {
   const now = new Date();
@@ -10,6 +17,7 @@ export default function Dashboard({ expenses }) {
 
   const [selectedMonth, setSelectedMonth] = useState(currentMonth.toString());
   const [selectedYear, setSelectedYear] = useState(currentYear.toString());
+  const yearList = useMemo(() => buildYearList(expenses), [expenses]);
 
   const thisMonthExpenses = expenses.filter((exp) => {
     const [year, month] = exp.date.split("-").map(Number);
@@ -155,7 +163,7 @@ export default function Dashboard({ expenses }) {
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
           >
-            {YEARS.map((y) => (
+            {yearList.map((y) => (
               <option key={y} value={y}>
                 {y}
               </option>
